@@ -5,11 +5,12 @@ import path from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
 
-app.use(cors())
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+app.use(cors())
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -27,7 +28,7 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: "giovanifreitasdc@gmail.com", // seu e-mail
-    pass: "fxdl mpdb lzga hidx" // senha ou app password
+    pass: process.env.EMAIL_PASS // senha ou app password
   }
 });
 
@@ -50,5 +51,5 @@ app.post("/send", async (req, res) => {
     res.status(500).json({ success: false, message: "Erro ao enviar e-mail." });
   }
 });
-
-app.listen(3000, () => console.log("Servidor rodando na porta 3000"));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor rodando em ${PORT}`));
